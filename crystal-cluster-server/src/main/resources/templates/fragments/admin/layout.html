@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title th:text="${session.currentMenu.menuName}">后台管理</title>
+    <meta name="_csrf" content="${_csrf.token}" th:content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" content="${_csrf.headerName}" th:content="${_csrf.headerName}"/>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="icon" href="../../../static/favicon.ico" th:href="@{/favicon.ico}"/>
+
+    <!-- 以下用作预览使用，实际生成html时会自动删除 -->
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/font-awesome/4.7.0/css/font-awesome.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/ionicons/2.0.1/css/ionicons.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/AdminLTE/2.4.3/dist/css/AdminLTE.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/AdminLTE/2.4.3/dist/css/skins/_all-skins.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/AdminLTE/2.4.3/plugins/iCheck/square/blue.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/bootstrap-daterangepicker/3.0.3/css/bootstrap-daterangepicker.css" th:remove="all">
+
+    <!--[if lt IE 9]>
+    <script src="../../../META-INF/resources/webjars/respond/1.3.0/respond.min.js" th:remove="all"></script>
+    <script src="../../../META-INF/resources/webjars/html5shiv/3.7.0/html5shiv.min.js" th:remove="all"></script>
+    <![endif]-->
+    <!-- 预览使用资源结束 -->
+
+    <!-- 引入模板中head定义的公共js和css等内容 -->
+    <th:block th:include="~{fragments/admin/header :: head}"/>
+    <!--基础样式-end -->
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <header class="main-header" th:replace="~{fragments/admin/header :: mainheader}">
+        <!-- Logo -->
+        <a href="#" class="logo" th:href="@{/admin/home}">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+<!--
+            <span class="logo-mini"><b>A</b>LT</span>
+-->
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>广州种业信息平台</b></span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- Messages: style can be found in dropdown.less-->
+                    <li class="dropdown messages-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-envelope-o"></i>
+                            <span class="label label-success" th:text="4">4</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header" th:text="#{admin.main.header.message}">You have 4 messages</li>
+                            <li>
+                                <!-- inner menu: contains the actual data -->
+                                <ul class="menu">
+                                    <li><!-- start message -->
+                                        <a href="#">
+                                            <div class="pull-left">
+                                                <img src="https://zhaoyf-image.oss-cn-shenzhen.aliyuncs.com/tech/myprofile-photo.jpg" class="img-circle" alt="User Image">
+                                            </div>
+                                            <h4>
+                                                Support Team
+                                                <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                            </h4>
+                                            <p>Why not buy a new awesome theme?</p>
+                                        </a>
+                                    </li>
+                                    <!-- end message -->
+                                    <li>
+                                        <a href="#">
+                                            <div class="pull-left">
+                                                <img src="https://zhaoyf-image.oss-cn-shenzhen.aliyuncs.com/tech/myprofile-photo.jpg" class="img-circle" alt="User Image">
+                                            </div>
+                                            <h4>
+                                                AdminLTE Design Team
+                                                <small><i class="fa fa-clock-o"></i> 2 hours</small>
+                                            </h4>
+                                            <p>Why not buy a new awesome theme?</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="pull-left">
+                                                <img src="https://zhaoyf-image.oss-cn-shenzhen.aliyuncs.com/tech/myprofile-photo.jpg" class="img-circle" alt="User Image">
+                                            </div>
+                                            <h4>
+                                                Developers
+                                                <small><i class="fa fa-clock-o"></i> Today</small>
+                                            </h4>
+                                            <p>Why not buy a new awesome theme?</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="pull-left">
+                                                <img src="https://zhaoyf-image.oss-cn-shenzhen.aliyuncs.com/tech/myprofile-photo.jpg" class="img-circle" alt="User Image">
+                                            </div>
+                                            <h4>
+                                                Sales Department
+                                                <small><i class="fa fa-clock-o"></i> Yesterday</small>
+                                            </h4>
+                                            <p>Why not buy a new awesome theme?</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="pull-left">
+                                                <img src="https://zhaoyf-image.oss-cn-shenzhen.aliyuncs.com/tech/myprofile-photo.jpg" class="img-circle" alt="User Image">
+                                            </div>
+                                            <h4>
+                                                Reviewers
+                                                <small><i class="fa fa-clock-o"></i> 2 days</small>
+                                            </h4>
+                                            <p>Why not buy a new awesome theme?</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="footer"><a href="#" th:text="#{admin.main.header.seeall.message}">查看所有消息</a></li>
+                        </ul>
+                    </li>
+                    <!-- Notifications: style can be found in dropdown.less -->
+                    <li class="dropdown notifications-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-bell-o"></i>
+                            <span class="label label-warning" th:text="10">10</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header" th:text="#{admin.main.header.notify}">You have 10 notifications</li>
+                            <li>
+                                <!-- inner menu: contains the actual data -->
+                                <ul class="menu">
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
+                                            page and may cause design problems
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-users text-red"></i> 5 new members joined
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-shopping-cart text-green"></i> 25 sales made
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-user text-red"></i> You changed your username
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="footer"><a href="#" th:text="#{admin.main.header.seeall.notify}">View all</a></li>
+                        </ul>
+                    </li>
+                    <!-- Tasks: style can be found in dropdown.less -->
+                    <li class="dropdown tasks-menu" th:remove="all">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-flag-o"></i>
+                            <span class="label label-danger">9</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">You have 9 tasks</li>
+                            <li>
+                                <!-- inner menu: contains the actual data -->
+                                <ul class="menu">
+                                    <li><!-- Task item -->
+                                        <a href="#">
+                                            <h3>
+                                                Design some buttons
+                                                <small class="pull-right">20%</small>
+                                            </h3>
+                                            <div class="progress xs">
+                                                <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar"
+                                                     aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                    <span class="sr-only">20% Complete</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <!-- end task item -->
+                                    <li><!-- Task item -->
+                                        <a href="#">
+                                            <h3>
+                                                Create a nice theme
+                                                <small class="pull-right">40%</small>
+                                            </h3>
+                                            <div class="progress xs">
+                                                <div class="progress-bar progress-bar-green" style="width: 40%" role="progressbar"
+                                                     aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                    <span class="sr-only">40% Complete</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <!-- end task item -->
+                                    <li><!-- Task item -->
+                                        <a href="#">
+                                            <h3>
+                                                Some task I need to do
+                                                <small class="pull-right">60%</small>
+                                            </h3>
+                                            <div class="progress xs">
+                                                <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar"
+                                                     aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                    <span class="sr-only">60% Complete</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <!-- end task item -->
+                                    <li><!-- Task item -->
+                                        <a href="#">
+                                            <h3>
+                                                Make beautiful transitions
+                                                <small class="pull-right">80%</small>
+                                            </h3>
+                                            <div class="progress xs">
+                                                <div class="progress-bar progress-bar-yellow" style="width: 80%" role="progressbar"
+                                                     aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                    <span class="sr-only">80% Complete</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <!-- end task item -->
+                                </ul>
+                            </li>
+                            <li class="footer">
+                                <a href="#">View all tasks</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="https://zhaoyf-image.oss-cn-shenzhen.aliyuncs.com/tech/myprofile-photo.jpg" class="user-image" alt="User Image" th:src="@{https://zhaoyf-image.oss-cn-shenzhen.aliyuncs.com/tech/myprofile-photo.jpg}">
+                            <span class="hidden-xs" th:text="'赵亚飞'">赵亚飞</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img src="https://zhaoyf-image.oss-cn-shenzhen.aliyuncs.com/tech/myprofile-photo.jpg" class="img-circle" alt="User Image" th:src="@{https://zhaoyf-image.oss-cn-shenzhen.aliyuncs.com/tech/myprofile-photo.jpg}">
+
+                                <p th:text="'赵亚飞'+' - '+'研发工程师'">
+                                    赵亚飞 - 研发工程师
+                                    <small th:text="'注册时间：' + '2013.10'">Member since Nov. 2012</small>
+                                </p>
+                            </li>
+                            <!-- Menu Body -->
+                            <li class="user-body">
+                                <div class="row">
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Followers</a>
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Sales</a>
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Friends</a>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a href="#" class="btn btn-default btn-flat" th:text="#{admin.main.header.profile}">Profile</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="#" class="btn btn-default btn-flat" th:text="#{admin.main.header.signout}">Sign out</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar" th:replace="~{fragments/admin/menu :: mainsidebar}">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="https://zhaoyf-image.oss-cn-shenzhen.aliyuncs.com/tech/myprofile-photo.jpg" class="img-circle" alt="User Image" th:src="@{https://zhaoyf-image.oss-cn-shenzhen.aliyuncs.com/tech/myprofile-photo.jpg}">
+                </div>
+                <div class="pull-left info">
+                    <p th:text="'赵亚飞'">Alexander Pierce</p>
+                    <a href="#" th:text="在线"><i class="fa fa-circle text-success"></i>在线</a>
+                </div>
+            </div>
+            <!-- search form -->
+            <form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search..." th:placeholder="#{admin.main.sidebar.search}">
+                    <span class="input-group-btn">
+                        <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+            <!-- /.search form -->
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" data-widget="tree">
+                <li class="header" th:text="#{admin.main.sidebar.menutitle}">MAIN NAVIGATION</li>
+                <li class="active">
+                    <a href="#">
+                        <i class="fa fa-dashboard"></i> <span th:text="#{admin.main.sidebar.dashboad}">Dashboard</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-files-o"></i>
+                        <span>Layout Options</span>
+                        <span class="pull-right-container">
+                          <span class="label label-primary pull-right">4</span>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="pages/layout/top-nav.html"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
+                        <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
+                        <li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
+                        <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="pages/widgets.html">
+                        <i class="fa fa-th"></i> <span>Widgets</span>
+                        <span class="pull-right-container">
+                          <small class="label pull-right bg-green">new</small>
+                        </span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-pie-chart"></i>
+                        <span>Charts</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i> ChartJS</a></li>
+                        <li><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Morris</a></li>
+                        <li><a href="pages/charts/flot.html"><i class="fa fa-circle-o"></i> Flot</a></li>
+                        <li><a href="pages/charts/inline.html"><i class="fa fa-circle-o"></i> Inline charts</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-laptop"></i>
+                        <span>UI Elements</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="pages/UI/general.html"><i class="fa fa-circle-o"></i> General</a></li>
+                        <li><a href="pages/UI/icons.html"><i class="fa fa-circle-o"></i> Icons</a></li>
+                        <li><a href="pages/UI/buttons.html"><i class="fa fa-circle-o"></i> Buttons</a></li>
+                        <li><a href="pages/UI/sliders.html"><i class="fa fa-circle-o"></i> Sliders</a></li>
+                        <li><a href="pages/UI/timeline.html"><i class="fa fa-circle-o"></i> Timeline</a></li>
+                        <li><a href="pages/UI/modals.html"><i class="fa fa-circle-o"></i> Modals</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-edit"></i> <span>Forms</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> General Elements</a></li>
+                        <li><a href="pages/forms/advanced.html"><i class="fa fa-circle-o"></i> Advanced Elements</a></li>
+                        <li><a href="pages/forms/editors.html"><i class="fa fa-circle-o"></i> Editors</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-table"></i> <span>Tables</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="pages/tables/simple.html"><i class="fa fa-circle-o"></i> Simple tables</a></li>
+                        <li><a href="pages/tables/data.html"><i class="fa fa-circle-o"></i> Data tables</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="pages/calendar.html">
+                        <i class="fa fa-calendar"></i> <span>Calendar</span>
+                        <span class="pull-right-container">
+                          <small class="label pull-right bg-red">3</small>
+                          <small class="label pull-right bg-blue">17</small>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="pages/mailbox/mailbox.html">
+                        <i class="fa fa-envelope"></i> <span>Mailbox</span>
+                        <span class="pull-right-container">
+                          <small class="label pull-right bg-yellow">12</small>
+                          <small class="label pull-right bg-green">16</small>
+                          <small class="label pull-right bg-red">5</small>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <!--/*@thymesVar id="currentMenu" type="com.ai.mine.user.core.dto.resp.AuthMenuResourceBottomUpDTO"*/-->
+        <section class="content-header" th:object="${session.currentMenu}">
+            <h1>
+                <span th:text="${#object.menuName}">Dashboard</span>
+                <small>Control panel</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#" th:href="@{/admin/dashboard/index}"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li th:each="menuBase : ${#object.menuPathList}" th:text="${menuBase.menuName}">Dashboard</li>
+                <li class="active" th:text="${#object.menuName}">Dashboard</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content" layout:fragment="maincontent">
+            <!--这里是主工作区-->
+        </section>
+
+        <!-- /.content -->
+    </div>
+
+</div>
+
+<div th:remove="all">
+    <!-- jQuery 3 -->
+    <script src="../../../META-INF/resources/webjars/jquery/3.2.0/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="../../../META-INF/resources/webjars/AdminLTE/2.4.3/plugins/jQueryUI/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+    </script>
+    <script src="../../../META-INF/resources/webjars/raphaeljs/2.1.4/raphael.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="../../../META-INF/resources/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script src="../../../META-INF/resources/webjars/AdminLTE/2.4.3/plugins/iCheck/icheck.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="../../../META-INF/resources/webjars/momentjs/2.22.2/min/moment.min.js"></script>
+    <script src="../../../META-INF/resources/webjars/bootstrap-daterangepicker/3.0.3/js/bootstrap-daterangepicker.js"></script>
+    <!-- datepicker -->
+    <script src="../../../META-INF/resources/webjars/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+    <!-- Slimscroll -->
+    <script src="../../../META-INF/resources/webjars/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="../../../META-INF/resources/webjars/fastclick/1.0.6/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../../../META-INF/resources/webjars/AdminLTE/2.4.3/dist/js/adminlte.min.js"></script>
+</div>
+
+<th:block th:include="~{fragments/admin/scripts :: script}"/>
+<script type="text/javascript">
+    $(function () {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function(e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+    });
+</script>
+<th:block layout:fragment="custscript">
+    <!-- 这里是各个页面自定义的JavaScript代码和引入的外部js -->
+</th:block>
+</body>
+</html>

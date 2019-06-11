@@ -27,15 +27,9 @@ public class DemoSVImpl implements IDemoSV {
     public PageResponseDTO<DemoRespDTO> queryDemoPages(DemoDTO baseInfo) throws BusinessException {
         int pageNo = baseInfo.getPageNo();
         int pageSize = baseInfo.getPageSize();
-        String sortName = baseInfo.getGridQuerySortName();
-        String sortOrder = baseInfo.getGridQuerySortOrder();
 
         DemoExample example = new DemoExample();
-        if (StringUtil.isNotEmpty(sortName)) {
-            example.setOrderByClause(sortName + " " + sortOrder);
-        } else {
-            example.setOrderByClause("create_time");
-        }
+        example.setOrderByClause("create_time");
         PageHelper.startPage(pageNo, pageSize);
         List<Demo> list = demoMapper.selectByExample(example);
         if (list != null && list.size() > 0) {

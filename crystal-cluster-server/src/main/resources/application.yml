@@ -12,9 +12,9 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://111.230.152.81:3316/minedb?useUnicode=true&characterEncoding=utf8&useSSL=false
-    username: mineuser
-    password: minepwd
+    url: jdbc:mysql://111.230.152.81:3316/qianduan?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: qianduan
+    password: QianDuan!123
     druid:
       initial-size: 2
       min-idle: 5
@@ -30,6 +30,23 @@ spring:
       stat-view-servlet:
         login-username: druid
         login-password: druid
+  messages:
+    basename: i18n/message
+  thymeleaf:
+    cache: false
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      max-request-size: 200MB
+  resources:
+    chain:
+      cache: true
+      enabled: true
+      strategy:
+        content:
+          enabled: true
+          paths: ["/css/**","/image/**","/js/**","/js-busi/**","/widget/tinymce/**"]
 mybatis:
   mapper-locations: classpath*:/sqlmapper/**/*.xml
   type-aliases-package: com.ai.mine.*.dao.model;com.ai.mine.crystal.dao.model
@@ -46,4 +63,7 @@ application:
     login: admin:admin
   security:
     admin-password: "admin"
-    login-path: "login"
+    login-path: "admin/login/login"
+    enabled-kaptcha: false
+    web-permitall-url:
+      - "/portal/**"

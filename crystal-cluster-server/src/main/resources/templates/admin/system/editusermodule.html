@@ -1,0 +1,219 @@
+<!DOCTYPE html >
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/admin/layout}">
+<head>
+    <meta charset="utf-8" th:remove="all">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" th:remove="all">
+    <title>修改用户组件</title>
+    <!-- 以下用作预览使用，实际生成html时会自动删除 th:remove="all" -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/font-awesome/4.7.0/css/font-awesome.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/ionicons/2.0.1/css/ionicons.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/datatables/1.10.19/css/dataTables.bootstrap.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/select2/4.0.5/css/select2.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/AdminLTE/2.4.3/dist/css/AdminLTE.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/AdminLTE/2.4.3/dist/css/skins/_all-skins.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/AdminLTE/2.4.3/plugins/iCheck/square/blue.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/bootstrap-daterangepicker/3.0.3/css/bootstrap-daterangepicker.css" th:remove="all">
+    <!--[if lt IE 9]>
+    <script src="../../../META-INF/resources/webjars/respond/1.3.0/respond.min.js" th:remove="all"></script>
+    <script src="../../../META-INF/resources/webjars/html5shiv/3.7.0/html5shiv.min.js" th:remove="all"></script>
+    <![endif]-->
+    <!-- 预览使用资源结束 th:remove="all" -->
+
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+
+<div class="wrapper">
+
+    <header class="main-header" th:remove="all">
+        <!-- Logo -->
+        <a href="#" class="logo" th:href="@{/admin/home}">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>A</b>LT</span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>Admin</b>LTE</span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+        </nav>
+    </header>
+
+    <aside class="main-sidebar" th:remove="all">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="https://zhaoyf-image.oss-cn-shenzhen.aliyuncs.com/tech/myprofile-photo.jpg" class="img-circle" alt="User Image" th:src="'https://zhaoyf-image.oss-cn-shenzhen.aliyuncs.com/tech/myprofile-photo.jpg'">
+                </div>
+                <div class="pull-left info">
+                    <p th:text="'赵亚飞'">Alexander Pierce</p>
+                    <a href="#" th:text="#{admin.main.sidebar.online}"><i class="fa fa-circle text-success"></i> 在线</a>
+                </div>
+            </div>
+
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+    <div class="content-wrapper">
+        <section class="content" layout:fragment="maincontent">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <!--/*@thymesVar id="user" type="com.ai.mine.user.core.dto.resp.UserBaseRespDTO"*/-->
+                        <form class="form-horizontal" id="edit-user-form">
+                            <div class="box-header with-border">
+                                <h3 class="box-title" th:text="#{admin.user.baseinfo}">基本信息</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="userId" class="col-sm-2 control-label">
+                                        <span th:text="' ' + #{admin.user.userid}"> 用户编码</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" disabled="disabled" class="form-control" id="userId" value="100001" th:value="${user.userId}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="userName" class="col-sm-2 control-label">
+                                        <span style="color: red">*</span><span th:text="' ' + #{admin.user.username}"> 用户名</span>
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <div class="input-group" id="divUserName">
+                                            <input type="text" disabled="disabled" class="form-control" id="userName" value="zhaoyf7" th:value="${user.userName}">
+                                            <span class="input-group-addon"><i id="usernameCheckState" class="fa fa-check text-success"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="nickName" class="col-sm-2 control-label">
+                                        <span th:text="' ' + #{admin.user.nickname}"> 用户昵称</span>
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="nickName" value="赵亚飞"
+                                               th:placeholder="#{admin.user.nickname.placeholder}"
+                                               th:data-user-name="${user.nickName}" th:value="${user.nickName}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fullName" class="col-sm-2 control-label">
+                                        <span style="color: red">*</span><span th:text="' ' + #{admin.user.fullname}"> 用户全称</span>
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="fullName" value="赵亚飞"
+                                               th:placeholder="#{admin.user.fullname.placeholder}"
+                                               th:data-full-name="${user.fullName}" th:value="${user.fullName}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputPhone" class="col-sm-2 control-label">
+                                        <span style="color: red">*</span><span th:text="' ' + #{admin.user.mobile}"> 手机号码</span>
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <div class="input-group" id="divInputPhone">
+                                            <input type="tel" class="form-control" id="inputPhone" placeholder="手机号码"
+                                                   th:placeholder="#{admin.user.mobile.placeholder}"
+                                                   th:data-phone="${user.mobilePhone}" th:value="${user.mobilePhone}">
+                                            <span class="input-group-addon"><i class="fa fa-times text-gray"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputEmail" class="col-sm-2 control-label">
+                                        <span th:text="' ' + #{admin.user.email}"> 电子邮箱</span>
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <input type="email" class="form-control" id="inputEmail" placeholder="Email"
+                                               th:placeholder="#{admin.user.email.placeholder}"
+                                               th:data-email="${user.eMail}" th:value="${user.eMail}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box-header with-border">
+                                <h3 class="box-title" th:text="#{admin.user.rolebelong}">角色归属</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="inputRoles" class="col-sm-2 control-label">
+                                        <span style="color: red">*</span><span th:text="' ' + #{admin.user.roles}"> 角色归属</span>
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <select id="inputRoles" class="form-control select2" multiple="multiple" data-placeholder="请选择角色归属"
+                                                th:placeholder="#{admin.user.roles.placeholder}" style="width: 100%;" th:remove="all-but-first">
+                                            <!--/*@thymesVar id="select2" type="com.ai.seed.seedcenter.dto.resp.Select2ItemDTO"*/-->
+                                            <option value="100001" th:each="item,iterStat :${select2}" th:value="${item.id}" th:text="${item.text}" th:selected="${item.selected}">系统管理员</option>
+                                            <option value="100002">联盟会员</option>
+                                            <option value="100003">频道管理员</option>
+                                        </select>
+                                    </div>
+                                    <script type="text/javascript">
+                                        //初始化select2
+                                        $('#inputRoles').select2();
+                                    </script>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</div>
+<div th:remove="all">
+    <!-- jQuery 3 -->
+    <script src="../../../META-INF/resources/webjars/jquery/3.2.0/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="../../../META-INF/resources/webjars/AdminLTE/2.4.3/plugins/jQueryUI/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+    </script>
+    <script src="../../../META-INF/resources/webjars/raphaeljs/2.1.4/raphael.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="../../../META-INF/resources/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- DataTables -->
+    <script src="../../../META-INF/resources/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="../../../META-INF/resources/webjars/datatables/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script src="../../../META-INF/resources/webjars/AdminLTE/2.4.3/plugins/iCheck/icheck.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="../../../META-INF/resources/webjars/momentjs/2.22.2/min/moment.min.js"></script>
+    <script src="../../../META-INF/resources/webjars/bootstrap-daterangepicker/3.0.3/js/bootstrap-daterangepicker.js"></script>
+    <!-- datepicker -->
+    <script src="../../../META-INF/resources/webjars/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+    <!-- Slimscroll -->
+    <script src="../../../META-INF/resources/webjars/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="../../../META-INF/resources/webjars/fastclick/1.0.6/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../../../META-INF/resources/webjars/AdminLTE/2.4.3/dist/js/adminlte.min.js"></script>
+</div>
+<th:block layout:fragment="custscript">
+    <!-- 当前页面自定义的js文件，需要在jquery等通用js加载后加载，写在最后 -->
+    <script src="../../../META-INF/resources/webjars/select2/4.0.5/js/select2.full.min.js" th:src="@{/webjars/select2/4.0.5/js/select2.full.min.js}"></script>
+
+</th:block>
+</body>
+</html>

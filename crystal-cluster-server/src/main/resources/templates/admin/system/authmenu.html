@@ -1,0 +1,36 @@
+<ul class="sidebar-menu tree" data-widget="tree">
+    <li th:if="${authMenus != null}" th:each="authMenu : ${authMenus}" class="treeview menu-open">
+        <a  style="    background: #d3e0e6;  color:  black;">
+<!--
+            <i class="fa fa-circle-o"></i>
+-->
+
+            <span th:text="${authMenu.menuName}"></span>
+            <i class="fa fa-angle-left pull-right"></i>
+         <!--   <span class="pull-right-container" th:if="${not #lists.isEmpty(authMenu.subMenuList)}">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>-->
+        </a>
+         <ul class="treeview-menu"  style="padding-left: 20px;display: block;background-color: white;" th:if="${not #lists.isEmpty(authMenu.subMenuList)}">
+            <li th:each="subAuthMenu : ${authMenu.subMenuList}" class="treeview menu-open">
+                <a  style="color: black;">
+                    <i class="fa fa-angle-left pull-right"></i>
+                    <span th:text="${subAuthMenu.menuName}"></span>
+                </a>
+                <ul class="treeview-menu" style="display: block;"
+                    th:if="${not #lists.isEmpty(subAuthMenu.subMenuList)}">
+                    <li th:each="subTwoAuthMenu : ${subAuthMenu.subMenuList}" class="treeview menu-open">
+                        <a  style="color: black;">
+                             <span th:text="${subTwoAuthMenu.menuName}"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li th:if="${authMenus == null || authMenus.size() == 0}"  class="treeview menu-open">
+         <ul >
+         <span> 没有数据</span>
+        </ul>
+    </li>
+</ul>

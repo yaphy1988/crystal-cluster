@@ -150,3 +150,11 @@ fabric.properties
 
 ## jetbrains idea ========= end
 *paasContext.xml
+
+
+## webjars temporary resources
+/**/src/main/resources/META-INF/resources/
+
+## mybatis-generator temporary files
+/**/generatorConfig.xml
+/**/init.properties

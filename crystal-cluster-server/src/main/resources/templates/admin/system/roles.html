@@ -1,0 +1,333 @@
+<!DOCTYPE html >
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/admin/layout}">
+<head>
+    <meta charset="utf-8" th:remove="all">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" th:remove="all">
+    <title>角色管理</title>
+    <!-- 以下用作预览使用，实际生成html时会自动删除 th:remove="all" -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/font-awesome/4.7.0/css/font-awesome.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/ionicons/2.0.1/css/ionicons.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/datatables/1.10.19/css/dataTables.bootstrap.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/AdminLTE/2.4.3/dist/css/AdminLTE.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/AdminLTE/2.4.3/dist/css/skins/_all-skins.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/AdminLTE/2.4.3/plugins/iCheck/square/blue.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/bootstrap-daterangepicker/3.0.3/css/bootstrap-daterangepicker.css" th:remove="all">
+    <!--[if lt IE 9]>
+    <script src="../../../META-INF/resources/webjars/respond/1.3.0/respond.min.js" th:remove="all"></script>
+    <script src="../../../META-INF/resources/webjars/html5shiv/3.7.0/html5shiv.min.js" th:remove="all"></script>
+    <![endif]-->
+    <!-- 预览使用资源结束 th:remove="all" -->
+
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+
+<div class="wrapper">
+    <header class="main-header" th:remove="all">
+        <!-- Logo -->
+        <a href="#" class="logo" th:href="@{/admin/home}">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>A</b>LT</span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>Admin</b>LTE</span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+        </nav>
+    </header>
+
+    <aside class="main-sidebar" th:remove="all">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="https://zhaoyf-image.oss-cn-shenzhen.aliyuncs.com/tech/myprofile-photo.jpg" class="img-circle" alt="User Image" th:src="'https://zhaoyf-image.oss-cn-shenzhen.aliyuncs.com/tech/myprofile-photo.jpg'">
+                </div>
+                <div class="pull-left info">
+                    <p th:text="'赵亚飞'">Alexander Pierce</p>
+                    <a href="#" th:text="#{admin.main.sidebar.online}"><i class="fa fa-circle text-success"></i> 在线</a>
+                </div>
+            </div>
+
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header" th:remove="all">
+            <h1>
+                角色管理
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active">角色管理</li>
+            </ol>
+        </section>
+
+        <section class="content" layout:fragment="maincontent">
+            <!-- Info boxes -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <button type="button" class="btn btn-primary" onclick="createNewRole()">
+                                <i class="fa fa-plus"></i><span>新增</span>
+                            </button>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body no-padding">
+                            <table id="roleTables" class="table table-condensed" style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th style="width: 40px">序号</th>
+                                    <th>角色编码</th>
+                                    <th>角色名称</th>
+                                    <th>角色类型</th>
+                                    <th>排序</th>
+                                    <th>是否有效</th>
+                                    <th>创建时间</th>
+                                    <th>更新时间</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody th:remove="all-but-first">
+                                <tr th:each="role,iterStat : ${roleList}">
+                                    <td th:text="(${iterStat.index + 1}) + '.'">1.</td>
+                                    <td th:text="${role.roleId}">100001</td>
+                                    <td th:text="${role.roleName}">管理角色</td>
+                                    <td th:text="${role.roleType}">管理员</td>
+                                    <td th:text="${role.rankNumber}">1</td>
+                                    <td th:text="${role.isValid} == '1'? '是':'否'">是</td>
+                                    <td th:text="${#dates.format(role.createTime, 'yyyy-MM-dd HH:mm')}">2018-11-07 15:00</td>
+                                    <td th:text="${#dates.format(role.updateTime, 'yyyy-MM-dd HH:mm')}">2018-11-07 15:00</td>
+                                    <td>
+                                        <a th:onclick="'authorityRole('+${role.roleId}+');'" class="btn-sm btn-warning"><i class="fa fa-get-pocket"></i><span>授权</span></a>
+                                        <a th:onclick="'editRole(\''+${role.roleId}+'\',\''+${role.roleName}+'\',\''+${role.roleType}+'\',\''+${role.rankNumber}+'\');'"
+                                           class="btn-sm btn-warning"><i class="fa fa-edit"></i><span>编辑</span></a>
+                                        <a th:onclick="'deleteRoleModel(\''+${role.roleId}+'\',\''+${role.roleName}+'\');'"
+                                           class="btn-sm btn-danger"><i class="fa fa-user-times"></i><span>删除</span></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2.</td>
+                                    <td>100002</td>
+                                    <td>联盟会员</td>
+                                    <td>SYS</td>
+                                    <td>2</td>
+                                    <td>有效</td>
+                                    <td>2018-11-07 15:00</td>
+                                    <td>2018-11-07 15:00</td>
+                                    <td>
+                                        <a href="#" class="btn-sm btn-warning"><i class="fa fa-edit"></i><span>编辑</span></a>
+                                        <a href="#" class="btn-sm btn-danger"><i class="fa fa-user-times"></i><span>禁用</span></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3.</td>
+                                    <td>100003</td>
+                                    <td>频道管理员</td>
+                                    <td>SYS</td>
+                                    <td>2</td>
+                                    <td>有效</td>
+                                    <td>2018-11-07 15:00</td>
+                                    <td>2018-11-07 15:00</td>
+                                    <td>
+                                        <a href="#" class="btn-sm btn-warning"><i class="fa fa-edit"></i><span>编辑</span></a>
+                                        <a href="#" class="btn-sm btn-danger"><i class="fa fa-user-times"></i><span>禁用</span></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+            </div>
+
+            <div class="modal fade" id="new-role">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">新增角色</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" id="new-role-form">
+                                <div class="form-group">
+                                    <label for="roleName" class="col-sm-2 control-label">
+                                        <span style="color: red">*</span><span th:text="' ' + #{admin.role.rolename}">角色名称</span>
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="roleName" placeholder="角色名称"
+                                               th:placeholder="#{admin.role.rolename.placeholder}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="roleType" class="col-sm-2 control-label">
+                                        <span style="color: red">*</span><span th:text="' ' + #{admin.role.roletype}">角色类型</span>
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <select id="roleType" class="form-control" data-placeholder="角色类型"
+                                                th:placeholder="#{admin.role.roletype.placeholder}" style="width: 100%;">
+                                            <option value="SYS">SYS</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rankNumber" class="col-sm-2 control-label">
+                                        <span th:text="' ' + #{admin.role.ranknumber}">排序</span>
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="rankNumber" placeholder="排序"
+                                               th:placeholder="#{admin.role.ranknumber.placeholder}">
+                                    </div>
+                                </div>
+                                <input type="hidden" class="form-control" id="roleId">
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" onclick="roleDoWith()">保存</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+
+            <!--提示框信息-->
+            <div class="modal fade" id="modal-success">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="modal-success-title">创建成功</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="box-body">
+                                    <span id="modal-success-content"></span>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default center-block" data-dismiss="modal">确定</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+
+            <!-- 删除信息 -->
+            <div class="modal fade" id="deleteModel">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="deleteModelTitle">警告</h4>
+                        </div>
+                        <div class="modal-body" id="deleteModelBody">
+                            是否要删除该角色相关信息？
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" class="form-control" id="deleteRoleId">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" onclick="deleteRole()">确定</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
+
+        </section>
+    </div>
+</div>
+<div th:remove="all">
+    <!-- jQuery 3 -->
+    <script src="../../../META-INF/resources/webjars/jquery/3.2.0/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="../../../META-INF/resources/webjars/AdminLTE/2.4.3/plugins/jQueryUI/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+    </script>
+    <script src="../../../META-INF/resources/webjars/raphaeljs/2.1.4/raphael.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="../../../META-INF/resources/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- DataTables -->
+    <script src="../../../META-INF/resources/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="../../../META-INF/resources/webjars/datatables/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script src="../../../META-INF/resources/webjars/AdminLTE/2.4.3/plugins/iCheck/icheck.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="../../../META-INF/resources/webjars/momentjs/2.22.2/min/moment.min.js"></script>
+    <script src="../../../META-INF/resources/webjars/bootstrap-daterangepicker/3.0.3/js/bootstrap-daterangepicker.js"></script>
+    <!-- datepicker -->
+    <script src="../../../META-INF/resources/webjars/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+    <!-- Slimscroll -->
+    <script src="../../../META-INF/resources/webjars/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="../../../META-INF/resources/webjars/fastclick/1.0.6/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../../../META-INF/resources/webjars/AdminLTE/2.4.3/dist/js/adminlte.min.js"></script>
+</div>
+<th:block layout:fragment="custscript">
+    <!-- 当前页面自定义的js文件，需要在jquery等通用js加载后加载，写在最后 -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#roleTables').DataTable( {
+                paging:         true,
+                ordering:       false,
+                searching:      true,
+                lengthChange:   false,
+                pageLength: 20,
+                language: {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 升序",
+                        "sSortDescending": ": 降序"
+                    }
+                }
+            } );
+        } );
+    </script>
+    <!-- 当前页面自定义的js文件，需要在jquery等通用js加载后加载，写在最后 -->
+    <script src="../../../META-INF/resources/webjars/select2/4.0.5/js/select2.full.min.js" th:src="@{/webjars/select2/4.0.5/js/select2.full.min.js}"></script>
+    <script src="../../../static/js-busi/managerole.js" th:src="@{/js-busi/managerole.js}"></script>
+</th:block>
+</body>
+</html>

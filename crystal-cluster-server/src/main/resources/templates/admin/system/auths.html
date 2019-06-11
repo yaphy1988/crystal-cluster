@@ -1,0 +1,209 @@
+<!DOCTYPE html >
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/admin/layout}">
+<head>
+    <meta charset="utf-8" th:remove="all">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" th:remove="all">
+    <title>权限查看</title>
+    <!-- 以下用作预览使用，实际生成html时会自动删除 th:remove="all" -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/font-awesome/4.7.0/css/font-awesome.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/ionicons/2.0.1/css/ionicons.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/datatables/1.10.19/css/dataTables.bootstrap.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/AdminLTE/2.4.3/dist/css/AdminLTE.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/AdminLTE/2.4.3/dist/css/skins/_all-skins.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/AdminLTE/2.4.3/plugins/iCheck/square/blue.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" th:remove="all">
+    <link rel="stylesheet" href="../../../META-INF/resources/webjars/bootstrap-daterangepicker/3.0.3/css/bootstrap-daterangepicker.css" th:remove="all">
+    <!--[if lt IE 9]>
+    <script src="../../../META-INF/resources/webjars/respond/1.3.0/respond.min.js" th:remove="all"></script>
+    <script src="../../../META-INF/resources/webjars/html5shiv/3.7.0/html5shiv.min.js" th:remove="all"></script>
+    <![endif]-->
+    <!-- 预览使用资源结束 th:remove="all" -->
+
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+
+<div class="wrapper">
+
+    <header class="main-header" th:remove="all">
+        <!-- Logo -->
+        <a href="#" class="logo" th:href="@{/admin/home}">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>A</b>LT</span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>Admin</b>LTE</span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+        </nav>
+    </header>
+
+    <aside class="main-sidebar" th:remove="all">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="https://zhaoyf-image.oss-cn-shenzhen.aliyuncs.com/tech/myprofile-photo.jpg" class="img-circle" alt="User Image" th:src="'https://zhaoyf-image.oss-cn-shenzhen.aliyuncs.com/tech/myprofile-photo.jpg'">
+                </div>
+                <div class="pull-left info">
+                    <p th:text="'赵亚飞'">Alexander Pierce</p>
+                    <a href="#" th:text="#{admin.main.sidebar.online}"><i class="fa fa-circle text-success"></i> 在线</a>
+                </div>
+            </div>
+
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header" th:remove="all">
+            <h1>
+                权限查看
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active">权限查看</li>
+            </ol>
+        </section>
+
+        <section class="content" layout:fragment="maincontent">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <form class="form-horizontal">
+                            <!--权限信息-->
+                            <!--<div class="box-header with-border">
+                                <h3 class="box-title">权限查看</h3>
+                            </div>-->
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <div class="col-sm-6 control-label" style="text-align:left;">
+                                        <!--<label>权限列表</label>-->
+                                        <select multiple="" class="form-control" size="16" id="selectRole" style="border:1px solid #ddd;height: 500px;">
+                                            <option th:each="authAuthority,iterStat : ${authAuthorityList}"
+                                                    th:value="${authAuthority.authorityId}"
+                                                    th:text="${authAuthority.authorityId}+'_'+${authAuthority.authorityName}"
+                                                    th:onclick="'javascript:Menu.authToMenu('+${authAuthority.authorityId}+')'"></option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-sm-6 control-label" style="text-align: left;">
+                                        <div style="border:1px solid #ddd;height: 500px;overflow-y:scroll;" id="roleMenu">
+                                     <!--       <ul class="sidebar-menu tree" data-widget="tree">
+                                                <li th:each="authMenu : ${authMenus}" class="treeview menu-open">
+                                                    <a>
+                                                        <i class="fa fa-circle-o"></i>
+                                                        <span th:text="${authMenu.menuName}"></span>
+                                                        <span class="pull-right-container" th:if="${not #lists.isEmpty(authMenu.subMenuList)}">
+                                                          <i class="fa fa-angle-left pull-right"></i>
+                                                        </span>
+                                                    </a>
+                                                    <ul class="treeview-menu" style="display: block;" th:if="${not #lists.isEmpty(authMenu.subMenuList)}">
+                                                        <li th:each="subAuthMenu : ${authMenu.subMenuList}" class="treeview menu-open">
+                                                            <a>
+                                                                <i class="fa fa-circle-o"></i>
+                                                                <span th:text="${subAuthMenu.menuName}"></span>
+                                                                <span class="pull-right-container" th:if="${not #lists.isEmpty(subAuthMenu.subMenuList)}">
+                                                                  <i class="fa fa-angle-left pull-right"></i>
+                                                                </span>
+                                                            </a>
+                                                            <ul class="treeview-menu" style="display: block;"
+                                                                th:if="${not #lists.isEmpty(subAuthMenu.subMenuList)}">
+                                                                <li th:each="subTwoAuthMenu : ${subAuthMenu.subMenuList}" class="treeview menu-open">
+                                                                    <a>
+                                                                        <i class="fa fa-circle-o"></i>
+                                                                        <span th:text="${subTwoAuthMenu.menuName}"></span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box-footer"></div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<div th:remove="all">
+    <!-- jQuery 3 -->
+    <script src="../../../META-INF/resources/webjars/jquery/3.2.0/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="../../../META-INF/resources/webjars/AdminLTE/2.4.3/plugins/jQueryUI/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+    </script>
+    <script src="../../../META-INF/resources/webjars/raphaeljs/2.1.4/raphael.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="../../../META-INF/resources/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- DataTables -->
+    <script src="../../../META-INF/resources/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="../../../META-INF/resources/webjars/datatables/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script src="../../../META-INF/resources/webjars/AdminLTE/2.4.3/plugins/iCheck/icheck.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="../../../META-INF/resources/webjars/momentjs/2.22.2/min/moment.min.js"></script>
+    <script src="../../../META-INF/resources/webjars/bootstrap-daterangepicker/3.0.3/js/bootstrap-daterangepicker.js"></script>
+    <!-- datepicker -->
+    <script src="../../../META-INF/resources/webjars/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+    <!-- Slimscroll -->
+    <script src="../../../META-INF/resources/webjars/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="../../../META-INF/resources/webjars/fastclick/1.0.6/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../../../META-INF/resources/webjars/AdminLTE/2.4.3/dist/js/adminlte.min.js"></script>
+</div>
+<th:block layout:fragment="custscript">
+    <!-- 当前页面自定义的js文件，需要在jquery等通用js加载后加载，写在最后 -->
+    <script src="../../static/js-busi/product.js" th:src="@{/js-busi/authToMenu.js}"></script>
+<!--
+    <script type="text/javascript">
+        function authToMenu(authorityId) {
+            $("#roleMenu").empty();
+            $("#roleMenu").append("<div class=\"overlay\">\n" +
+                "          <i class=\"fa fa-refresh fa-spin\"></i>\n" +
+                "        </div>");
+            var params = {
+                authorityId : authorityId
+            };
+            var url= WEB_ROOT + "/admin/manageAuthority/authToMenu";
+            $.ajax({
+                url:url,
+                cache:false,
+                async:true,
+                type:"POST",
+                dataType:'html',
+                data : params,
+                success:function(data){
+                    $("#roleMenu").empty();
+                    $("#roleMenu").html(data);
+                }
+            });
+        }
+    </script>-->
+<!--
+    <script src="../../../META-INF/resources/webjars/select2/4.0.5/js/select2.full.min.js" th:src="@{/webjars/select2/4.0.5/js/select2.full.min.js}"></script>
+-->
+</th:block>
+</body>
+</html>
