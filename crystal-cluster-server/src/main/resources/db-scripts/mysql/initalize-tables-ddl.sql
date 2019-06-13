@@ -28,6 +28,22 @@ create table t_user_extension
 
 alter table t_user_extension comment 't_user_extension用户扩展信息表';
 
+/*==============================================================*/
+/* Table: t_sys_parameters                                      */
+/*==============================================================*/
+create table t_sys_parameters
+(
+  param_code           varchar(128) not null comment '参数编码',
+  param_name           varchar(128) comment '参数名称',
+  param_value          varchar(256) comment '参数值',
+  description          varchar(256) comment '参数使用说明',
+  create_time          datetime comment '创建时间',
+  update_time          datetime comment '更新时间',
+  primary key (param_code)
+);
+
+alter table t_sys_parameters comment 't_sys_parameters系统参数表，用于系统运行参数的持久化存储';
+
 
 /*==============================================================*/
 /* Table: t_keda_caseinfo                                       */
