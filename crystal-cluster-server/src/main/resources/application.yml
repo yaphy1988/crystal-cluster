@@ -47,6 +47,9 @@ spring:
         content:
           enabled: true
           paths: ["/css/**","/image/**","/js/**","/js-busi/**","/widget/tinymce/**"]
+  quartz:
+    scheduler-name: quartzScheduler
+
 mybatis:
   mapper-locations: classpath*:/sqlmapper/**/*.xml
   type-aliases-package: com.ai.mine.*.dao.model;com.ai.mine.crystal.dao.model
@@ -67,3 +70,9 @@ application:
     enabled-kaptcha: false
     web-permitall-url:
       - "/portal/**"
+
+  quartz:
+    caseinfo:
+      interval: 10
+    video:
+      interval: 10

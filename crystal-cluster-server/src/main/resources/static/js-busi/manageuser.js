@@ -42,7 +42,7 @@ function processTable($element) {
         paging      : true,
         lengthChange: false,
         searching   : false,
-        ordering    : true,
+        ordering    : false,
         info        : true,
         autoWidth   : false,
         language: {
@@ -152,7 +152,7 @@ function checkUsername($ele) {
 }
 
 function showEdit(userId) {
-    $("#edit-user-submit").attr("onclick", "userManager.saveEditUser();");
+    $("#edit-user-submit").attr("onclick", "saveEditUser();");
     $('#modal-title').text('修改用户信息');
     var url = WEB_ROOT + "/admin/manageUser/showedit";
     var params = {
@@ -173,8 +173,26 @@ function showEdit(userId) {
 }
 
 function saveEditUser() {
+    var userid = $("#userId").val();
+    var username = $("#userName").val();
+    var nickname = $("#nickName").val();
+    var fullname = $("#fullName").val();
+    var mobile = $("#inputPhone").val();
+    var email = $("#inputEmail").val();
+    var selectData = $("#inputRoles").select2("data");
+    var roles = new Array(selectData.length);
+    for (var i=0; i < selectData.length; i++) {
+        roles[i] = selectData[i].id;
+    }
+
     var params = {
-        username : username
+        userid : userid,
+        username : username,
+        nickname : nickname,
+        fullname : fullname,
+        mobile : mobile,
+        email : email,
+        roles : roles
     };
 
     var url= WEB_ROOT + "/admin/manageUser/edituser";
@@ -186,7 +204,7 @@ function saveEditUser() {
         data : params,
         success:function(data){
             if (data.success == true) {
-
+                $('#edit-user').modal("hide");
             } else {
 
             }

@@ -15,6 +15,7 @@ import com.ai.mine.user.core.service.interfaces.IManageRoleSV;
 import com.ai.mine.user.core.service.interfaces.IManageUserSV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -132,6 +133,48 @@ public class ManageUserController {
           result.put("success", false);
           result.put("msg",e.getMessage());
     }
+        return result;
+    }
+
+    @RequestMapping("/edituser")
+    @ResponseBody
+    public Object editUser(Model model, @RequestParam Long userid, @RequestParam String username, @RequestParam String nickname,
+                             @RequestParam String fullname, @RequestParam String mobile, @RequestParam String email,
+                             @RequestParam(value = "roles[]") String[] roles) throws Exception {
+
+        HashMap<String, Object> result = new HashMap<>();
+        try{
+            //修改用户
+            UserBaseDTO userBase = new UserBaseDTO();
+            UserBaseRespDTO userBaseRespDTO = manageUserSV.queryUserBase(userid);
+            BeanUtils.copyProperties(userBaseRespDTO, userBase);
+            userBase.setUserType(UserTypeEnum.ADMIN.name());
+            userBase.seteMail(email);
+            userBase.setMobilePhone(mobile);
+            userBase.setFullName(fullname);
+            userBase.setNickName(nickname);
+            userBase.setUserEnabled(CommonConstants.ENABLED);
+
+            userBase = manageUserSV.updateUserBase(userBase);
+
+            if (userBase.getUserId() > 0) {
+                //更新角色
+                //TODO: 识别用户角色变更信息，保存更新后的角色
+                for (String role : roles) {
+                    UserRoleuserDTO roleUser = new UserRoleuserDTO();
+                    roleUser.setRoleId(Integer.valueOf(role));
+                    roleUser.setUserId(userBase.getUserId());
+
+                }
+                result.put("success", true);
+            } else {
+                result.put("success", false);
+                result.put("msg","创建失败了");
+            }
+        }catch(Exception e){
+            result.put("success", false);
+            result.put("msg",e.getMessage());
+        }
         return result;
     }
 
