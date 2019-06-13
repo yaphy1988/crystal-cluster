@@ -10,6 +10,6 @@ public class CaseInformationJob extends AbstractJob {
     @Override
     protected void doTask() {
 
-        logger.warn("CaseInformationJob，自动任务开始执行……");
+        logger.info("CaseInformationJob，自动任务开始执行……");
     }
 }

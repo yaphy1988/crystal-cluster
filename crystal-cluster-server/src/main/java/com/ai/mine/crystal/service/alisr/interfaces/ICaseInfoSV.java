@@ -1,6 +1,11 @@
 package com.ai.mine.crystal.service.alisr.interfaces;
 
+import com.ai.mine.common.dto.PageResponseDTO;
 import com.ai.mine.common.exception.BusinessException;
+import com.ai.mine.crystal.dto.req.KedaCaseinfoDTO;
+import com.ai.mine.crystal.dto.req.KedaRecordDTO;
+import com.ai.mine.crystal.dto.resp.KedaCaseinfoRespDTO;
+import com.ai.mine.crystal.dto.resp.KedaRecordRespDTO;
 
 import java.util.Date;
 
@@ -14,5 +19,29 @@ public interface ICaseInfoSV {
      * @throws BusinessException 业务异常
      */
     boolean downloadCaseInfo(Date startTime, Date endTime) throws BusinessException;
+
+    /**
+     * 查询待处理的案件信息
+     * @param caseinfoDTO 分页查询信息
+     * @return 分页KedaCaseinfoRespDTO
+     * @throws BusinessException 业务异常
+     */
+    PageResponseDTO<KedaCaseinfoRespDTO> pendingCaseInfoPages(KedaCaseinfoDTO caseinfoDTO) throws BusinessException;
+
+    /**
+     * 查询待处理的笔录信息
+     * @param recordDTO 分页查询信息
+     * @return 分页KedaRecordRespDTO
+     * @throws BusinessException 业务异常
+     */
+    PageResponseDTO<KedaRecordRespDTO> pendingRecordPages(KedaRecordDTO recordDTO) throws BusinessException;
+
+    /**
+     * 完成视频下载后更新案件信息
+     * @param caseinfoDTO 已经完成下载的案件信息
+     * @return KedaCaseinfoDTO
+     * @throws BusinessException 业务异常
+     */
+    KedaCaseinfoDTO completeCaseVideoDownload(KedaCaseinfoDTO caseinfoDTO) throws BusinessException;
 
 }

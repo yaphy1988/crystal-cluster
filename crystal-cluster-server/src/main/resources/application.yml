@@ -76,3 +76,5 @@ application:
       interval: 10
     video:
       interval: 10
+  keda:
+    api: http://10.145.48.188/rasweb/dataMasage

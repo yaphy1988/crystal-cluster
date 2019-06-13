@@ -15,7 +15,7 @@ public class DownloadVideoJob extends AbstractJob {
     @Override
     protected void doTask() {
 
-        logger.warn("DownloadVideoJob，开始执行下载视频任务……");
+        logger.info("DownloadVideoJob，开始执行下载视频任务……");
 
         downloadVideoSV.downloadVideoById("123");
     }
