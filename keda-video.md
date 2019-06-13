@@ -107,3 +107,5 @@ create index idx_keda_record_caseid on t_keda_record
 );
 
 ```
+
+文件下载后重命名存储路径：`/yjcloud/001/20190421/案号_询问室202_1_审讯人.wav`

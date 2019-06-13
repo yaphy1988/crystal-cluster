@@ -95,12 +95,13 @@ create table t_keda_video_storage
    case_id              varchar(128) comment '案件ID',
    case_name            varchar(128) comment '案件名称',
    asker                varchar(128) comment '讯问人',
+   room_name            varchar(128) comment '提讯室',
    persion_id           varchar(128) comment '嫌疑人ID',
    create_time          datetime comment '创建时间',
    primary key (video_storage_id)
 );
 
-alter table t_keda_record comment 't_keda_video_storage笔录视频存储结果表';
+alter table t_keda_video_storage comment 't_keda_video_storage笔录视频存储结果表';
 
 create index idx_keda_video_caseid on t_keda_video_storage
 (
