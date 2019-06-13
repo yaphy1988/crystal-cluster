@@ -43,6 +43,7 @@
     </build>
 
   <modules>
+    <module>mybatis-generator</module>
     <module>crystal-cluster-api</module>
     <module>crystal-cluster-server</module>
   </modules>
