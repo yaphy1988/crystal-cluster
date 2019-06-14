@@ -101,3 +101,9 @@ values (100000, 100001, 100001, sysdate(), sysdate());
 update t_sequence set t_sequence.VALUE = 100001 where t_sequence.NAME = 'SEQ_USER_ROLE_USER';
 
 commit;
+
+delete from t_sys_parameters where param_code = 'KEDA_JOB_DEAL_DATE';
+insert into t_sys_parameters (param_code, param_name, param_value, description, create_time, update_time)
+values ('KEDA_JOB_DEAL_DATE', '科达提讯案件下载任务处理日期', '2019-01-01', '自动任务当前处理到哪一天，格式：yyyy-MM-dd', sysdate(), sysdate());
+
+commit;

@@ -1,5 +1,6 @@
 package com.ai.mine.crystal.constant;
 
+import com.ai.mine.crystal.enums.JobStatusEnum;
 import com.ai.mine.crystal.enums.SexEnum;
 
 import java.util.HashMap;
@@ -13,9 +14,7 @@ public class EnumsMapConstant {
      * 定义一个字典的KEY
      */
     public static final String SEX_KEY = "sex";
-
-
-
+    public static final String JOB_STATUS_KEY = "jobStatus";
 
 
     /**
@@ -24,7 +23,7 @@ public class EnumsMapConstant {
     public static final Map<String, String> ENUMS_MAP = new HashMap<String, String>() {
         {
             put(SEX_KEY, SexEnum.class.getName());
-
+            put(JOB_STATUS_KEY, JobStatusEnum.class.getName());
         }
     };
 
