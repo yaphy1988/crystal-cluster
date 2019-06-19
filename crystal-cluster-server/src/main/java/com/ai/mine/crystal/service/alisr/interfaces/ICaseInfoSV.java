@@ -44,4 +44,20 @@ public interface ICaseInfoSV {
      */
     KedaCaseinfoDTO completeCaseVideoDownload(KedaCaseinfoDTO caseinfoDTO) throws BusinessException;
 
+    /**
+     * 保存案件信息Caseinfo，含新建和更新
+     * @param caseinfoDTO 案件信息
+     * @return caseinfoDTO 保存成功后原样返回
+     * @throws BusinessException 业务异常
+     */
+    KedaCaseinfoDTO saveCaseinfoByPrimary(KedaCaseinfoDTO caseinfoDTO) throws BusinessException;
+
+    /**
+     * 保存案件笔录信息Record，含新建和更新
+     * @param recordDTO 笔录信息
+     * @return recordDTO 保存成功后原样返回
+     * @throws BusinessException 业务异常
+     */
+    KedaRecordDTO saveRecordByPrimary(KedaRecordDTO recordDTO) throws BusinessException;
+
 }

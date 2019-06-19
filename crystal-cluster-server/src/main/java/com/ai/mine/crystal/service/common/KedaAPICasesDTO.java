@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class KedaCasesDTO implements Serializable {
+public class KedaAPICasesDTO implements Serializable {
 
     private String caseId;
 
@@ -24,7 +24,7 @@ public class KedaCasesDTO implements Serializable {
 
     private String caseStatus;
 
-    private List<KedaRecordsDTO> records;
+    private List<KedaAPIRecordsDTO> records;
 
     public String getCaseId() {
         return caseId;
@@ -98,11 +98,11 @@ public class KedaCasesDTO implements Serializable {
         this.caseStatus = caseStatus;
     }
 
-    public List<KedaRecordsDTO> getRecords() {
+    public List<KedaAPIRecordsDTO> getRecords() {
         return records;
     }
 
-    public void setRecords(List<KedaRecordsDTO> records) {
+    public void setRecords(List<KedaAPIRecordsDTO> records) {
         this.records = records;
     }
 }

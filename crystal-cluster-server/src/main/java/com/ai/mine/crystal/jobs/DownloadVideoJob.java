@@ -56,7 +56,7 @@ public class DownloadVideoJob extends AbstractJob {
                     logger.error("DownloadVideoJob，更新案件视频下载状态失败，请联系管理员！");
                 }
             } else {
-                //如果存在需要下载的笔录，执行下载
+                //如果存在需要处理的笔录，执行下载视频的操作
                 for (KedaRecordRespDTO recordRespDTO : records.getResult()) {
                     downloadVideoSV.downloadVideoById(recordRespDTO.getRecordId());
                 }

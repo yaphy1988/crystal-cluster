@@ -3,7 +3,7 @@ package com.ai.mine.crystal.service.common;
 import java.io.Serializable;
 import java.util.Date;
 
-public class KedaRecordsDTO implements Serializable {
+public class KedaAPIRecordsDTO implements Serializable {
 
     private String recordId;
 
