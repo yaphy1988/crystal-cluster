@@ -19,6 +19,8 @@ public class HttpRequestUtil extends HttpUtil {
         Assert.notNull(uri, "请求地址不能为空！");
         HttpURLConnection connection = null;
         JSONObject result = null;
+        if (logger.isDebugEnabled()) logger.debug("请求服务地址：" + uri);
+        if (logger.isDebugEnabled()) logger.debug("POST请求参数：" + JSONObject.toJSONString(paramObj));
 
         try {
             URL url = new URL(uri);

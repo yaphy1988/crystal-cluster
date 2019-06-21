@@ -39,9 +39,9 @@ public class DownloadVideoSVImpl implements IDownloadVideoSV {
         //Done: 调用接口获取笔录下载地址，并执行下载，规范命名后存储到指定目录。
         //1. 封装接口调用参数
         Map<String, String> getParam = new HashMap<>();
-        getParam.put("id",recordId);
+        getParam.put("methodRequestParam",recordId);
         String requestURI = kedaMessageProcessor.parseRequestURI(API_GET_VIDEO_PATH, getParam);
-        KedaRequestBody requestBody = new KedaRequestBody(API_GET_VIDEO_PATH, "id");
+        KedaRequestBody requestBody = new KedaRequestBody(API_GET_VIDEO_PATH, recordId);
 
         //2. 调用科达接口，获取文件下载地址，并更新到笔录表中。
         threadSleep(1000);

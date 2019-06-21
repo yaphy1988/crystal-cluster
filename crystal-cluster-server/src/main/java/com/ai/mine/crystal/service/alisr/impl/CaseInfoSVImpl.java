@@ -28,6 +28,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.*;
 
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
@@ -36,6 +38,7 @@ public class CaseInfoSVImpl implements ICaseInfoSV {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final static String API_GET_CASES = "getCases";
+    private final static String CHARSET = "UTF-8";
 
     @Autowired
     private KedaMessageProcessor kedaMessageProcessor;
@@ -52,8 +55,12 @@ public class CaseInfoSVImpl implements ICaseInfoSV {
         //Done: 调用接口，下载案件信息，并存储到案件待处理表和笔录表中。
         //1. 封装请求参数
         Map<String, String> getParam = new HashMap<>();
-        getParam.put("startTime",DateUtil.formatTime(startTime));
-        getParam.put("endTime",DateUtil.formatTime(endTime));
+        try {
+            getParam.put("startTime",URLEncoder.encode(DateUtil.formatTime(startTime),CHARSET));
+            getParam.put("endTime",URLEncoder.encode(DateUtil.formatTime(endTime),CHARSET));
+        } catch (UnsupportedEncodingException e) {
+            logger.error("URLEncoder失败，编码格式不对！"+CHARSET);
+        }
         String requestURI = kedaMessageProcessor.parseRequestURI(API_GET_CASES, getParam);
         logger.info("requestURI = " + requestURI);
         KedaRequestBody requestBody = new KedaRequestBody(API_GET_CASES, "startTime,endTime");
@@ -61,23 +68,25 @@ public class CaseInfoSVImpl implements ICaseInfoSV {
         requestBody.setEndTime(DateUtil.formatTime(endTime));
 
         //2. 请求业务系统，获得案件信息
-        KedaAPICasesDTO apiCasesDTO = kedaMessageProcessor.getCasesByAPI(requestURI,requestBody);
-        if (apiCasesDTO == null || StringUtils.isBlank(apiCasesDTO.getCaseId())) {
-            logger.warn("科达远程提讯系统无案件信息，查询时间："+requestBody.getStartTime() + " -- " + requestBody.getEndTime());
-            return true;
-        }
+        List<KedaAPICasesDTO> apiCasesList = kedaMessageProcessor.getCasesByAPI(requestURI,requestBody);
+        for (KedaAPICasesDTO apiCasesDTO : apiCasesList) {
+            if (apiCasesDTO == null || StringUtils.isBlank(apiCasesDTO.getCaseId())) {
+                logger.warn("科达远程提讯系统无案件信息，查询时间："+requestBody.getStartTime() + " -- " + requestBody.getEndTime());
+                return true;
+            }
 
-        //3. 案件信息入库保存（待处理表，分为案件和笔录）
-        KedaCaseinfoDTO caseInfoDTO = parseCaseInfo(apiCasesDTO);
-        caseInfoDTO = this.saveCaseinfoByPrimary(caseInfoDTO);
-        if (caseInfoDTO == null) {
-            throw new BusinessException("保存案件信息出现异常","300101");
-        }
-        for (KedaAPIRecordsDTO apiRecordsDTO : apiCasesDTO.getRecords()) {
-            KedaRecordDTO recordDTO = parseRecordInfo(caseInfoDTO.getCaseId(), apiRecordsDTO);
-            recordDTO = this.saveRecordByPrimary(recordDTO);
-            if (recordDTO == null) {
-                throw new BusinessException("保存笔录信息出现异常","300102");
+            //3. 案件信息入库保存（待处理表，分为案件和笔录）
+            KedaCaseinfoDTO caseInfoDTO = parseCaseInfo(apiCasesDTO);
+            caseInfoDTO = this.saveCaseinfoByPrimary(caseInfoDTO);
+            if (caseInfoDTO == null) {
+                throw new BusinessException("保存案件信息出现异常","300101");
+            }
+            for (KedaAPIRecordsDTO apiRecordsDTO : apiCasesDTO.getRecords()) {
+                KedaRecordDTO recordDTO = parseRecordInfo(caseInfoDTO.getCaseId(), apiRecordsDTO);
+                recordDTO = this.saveRecordByPrimary(recordDTO);
+                if (recordDTO == null) {
+                    throw new BusinessException("保存笔录信息出现异常","300102");
+                }
             }
         }
 
@@ -123,7 +132,7 @@ public class CaseInfoSVImpl implements ICaseInfoSV {
         jobStatus.add(JobStatusEnum.pending.toString());
         jobStatus.add(JobStatusEnum.processing.toString());
         criteria.andJobStatusIn(jobStatus);
-        example.setOrderByClause(" create_time asc");
+        example.setOrderByClause(" job_time asc");
 
         PageHelper.startPage(pageNo, pageSize);
         List<TKedaRecord> list = kedaRecordMapper.selectByExample(example);

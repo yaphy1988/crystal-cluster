@@ -48,69 +48,76 @@ public class KedaMessageProcessor {
      * @param requestBody
      * @return
      */
-    public KedaAPICasesDTO getCasesByAPI(String requestURI, KedaRequestBody requestBody) {
+    public List<KedaAPICasesDTO> getCasesByAPI(String requestURI, KedaRequestBody requestBody) {
         try {
             JSONObject json = HttpRequestUtil.postJson(requestURI, requestBody);
-
+            List<KedaAPICasesDTO> list = new ArrayList<>();
             //封装返回数据
             String ret = json.getString("ret");
             if ("0".equals(ret)) {
-                JSONObject successData = json.getJSONObject("successData");
-                String caseId = successData.getString("id");
-                String caseName = successData.getString("caseName");
-                String caseUuid = successData.getString("caseUuid");
-                String caseNumber = successData.getString("caseNumber");
-                String createTime = successData.getString("createTime");
-                String modifyTime = successData.getString("modifyTime");
-                String areaId = successData.getString("areaId");
-                String areaName = successData.getString("areaName");
-                String caseStatus = successData.getString("caseStatus");
-                JSONArray records = successData.getJSONArray("records");
-                List<KedaAPIRecordsDTO> recordsList = new ArrayList<>();
-                for (int i = 0 ; i < records.size(); i++) {
-                    JSONObject record = records.getJSONObject(i);
-                    String recordId = record.getString("recordId");
-                    String uuid = record.getString("uuid");
-                    String templateId = record.getString("templateId");
-                    String asker = record.getString("asker");
-                    String persionId = record.getString("persionId");
-                    String startTime = record.getString("startTime");
-                    String endTime = record.getString("endTime");
-                    String status = record.getString("status");
-                    String recordType = record.getString("recordType");
-                    String applyId = record.getString("applyId");
-                    String remoteRoom = record.getString("remoteRoom");
-                    String localRoom = record.getString("localRoom");
+                JSONArray successList = json.getJSONArray("successList");
+                for (int s = 0; s < successList.size(); s++) {
+                    JSONObject data = successList.getJSONObject(s);
+                    String caseId = data.getString("id");
+                    String caseName = data.getString("caseName");
+                    String caseUuid = data.getString("caseUuid");
+                    String caseNumber = data.getString("caseNumber");
+                    String createTime = data.getString("createTime");
+                    String modifyTime = data.getString("modifyTime");
+                    String areaId = data.getString("areaId");
+                    String areaName = data.getString("areaName");
+                    String caseStatus = data.getString("caseStatus");
+                    JSONArray records = data.getJSONArray("records");
+                    List<KedaAPIRecordsDTO> recordsList = new ArrayList<>();
+                    if (records != null && !"null".equals(records.toJSONString()) && records.size() > 0) {
+                        for (int i = 0 ; i < records.size(); i++) {
+                            JSONObject record = records.getJSONObject(i);
+                            String recordId = record.getString("recordId");
+                            String uuid = record.getString("uuid");
+                            String templateId = record.getString("templateId");
+                            String asker = record.getString("asker");
+                            String persionId = record.getString("persionId");
+                            String startTime = record.getString("startTime");
+                            String endTime = record.getString("endTime");
+                            String status = record.getString("status");
+                            String recordType = record.getString("recordType");
+                            String applyId = record.getString("applyId");
+                            String remoteRoom = record.getString("remoteRoom");
+                            String localRoom = record.getString("localRoom");
 
-                    KedaAPIRecordsDTO recordsDTO = new KedaAPIRecordsDTO();
-                    recordsDTO.setRecordId(recordId);
-                    recordsDTO.setRecordUuid(uuid);
-                    recordsDTO.setTemplateId(templateId);
-                    recordsDTO.setAsker(asker);
-                    recordsDTO.setPersionId(persionId);
-                    recordsDTO.setStartTime(DateUtil.parse(startTime));
-                    recordsDTO.setEndTime(DateUtil.parse(endTime));
-                    recordsDTO.setStatus(status);
-                    recordsDTO.setRecordType(recordType);
-                    recordsDTO.setApplyId(applyId);
-                    recordsDTO.setRemoteRoom(remoteRoom);
-                    recordsDTO.setLocalRoom(localRoom);
+                            KedaAPIRecordsDTO recordsDTO = new KedaAPIRecordsDTO();
+                            recordsDTO.setRecordId(recordId);
+                            recordsDTO.setRecordUuid(uuid);
+                            recordsDTO.setTemplateId(templateId);
+                            recordsDTO.setAsker(asker);
+                            recordsDTO.setPersionId(persionId);
+                            recordsDTO.setStartTime(DateUtil.parse(startTime));
+                            recordsDTO.setEndTime(DateUtil.parse(endTime));
+                            recordsDTO.setStatus(status);
+                            recordsDTO.setRecordType(recordType);
+                            recordsDTO.setApplyId(applyId);
+                            recordsDTO.setRemoteRoom(remoteRoom);
+                            recordsDTO.setLocalRoom(localRoom);
 
-                    recordsList.add(recordsDTO);
+                            recordsList.add(recordsDTO);
+                        }
+                    }
+                    KedaAPICasesDTO casesDTO = new KedaAPICasesDTO();
+                    casesDTO.setCaseId(caseId);
+                    casesDTO.setCaseName(caseName);
+                    casesDTO.setCaseUuid(caseUuid);
+                    casesDTO.setCaseNumber(caseNumber);
+                    casesDTO.setCreateTime(DateUtil.parse(createTime));
+                    casesDTO.setModifyTime(DateUtil.parse(modifyTime));
+                    casesDTO.setAreaId(areaId);
+                    casesDTO.setAreaName(areaName);
+                    casesDTO.setCaseStatus(caseStatus);
+                    casesDTO.setRecords(recordsList);
+
+                    list.add(casesDTO);
                 }
-                KedaAPICasesDTO casesDTO = new KedaAPICasesDTO();
-                casesDTO.setCaseId(caseId);
-                casesDTO.setCaseName(caseName);
-                casesDTO.setCaseUuid(caseUuid);
-                casesDTO.setCaseNumber(caseNumber);
-                casesDTO.setCreateTime(DateUtil.parse(createTime));
-                casesDTO.setModifyTime(DateUtil.parse(modifyTime));
-                casesDTO.setAreaId(areaId);
-                casesDTO.setAreaName(areaName);
-                casesDTO.setCaseStatus(caseStatus);
-                casesDTO.setRecords(recordsList);
 
-                return casesDTO;
+                return list;
             } else {
                 logger.error("调用科达接口返回结果失败，返回报文信息：" + json.toJSONString());
             }
